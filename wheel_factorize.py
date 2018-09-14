@@ -46,6 +46,7 @@ class WheelFactor:
         if n <= 0: return None
         _factors = [1]
         inc = [self.wheel[i] - self.wheel[i-1] for i in range(1, len(self.wheel))]
+        inc += [self.wheel[0] + np.prod(self.basis) - self.wheel[-1]]
         for v in self.basis:
             while n % v == 0:
                 _factors += [v]
