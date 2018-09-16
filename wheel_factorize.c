@@ -162,7 +162,7 @@ long* factors(struct wheel_factor *wf, long n, long *count) {
     }
     // create large enough factors array
     // TODO: start small and increase as needed
-    long *factors = malloc(((long) sqrt(n)) * sizeof(long));
+    long *factors = malloc(((long) sqrt(n) + 2) * sizeof(long));
     if (factors == NULL) {
         return NULL;
     }
@@ -207,31 +207,4 @@ long* factors(struct wheel_factor *wf, long n, long *count) {
 
     *count = index;
     return factors;
-}
-
-void print_factors(struct wheel_factor *wf, long n) {
-    long count;
-    long *primes = factors(wf, n, &count);
-    if (primes == NULL) {
-        printf("%ld: ERROR\n", n);
-        return;
-    }
-    printf("%ld: [", n);                // prefix
-    for (int i = 0; i < count-1; i++) {
-        printf("%ld, ", primes[i]);     // body
-    }
-    printf("%ld]\n", primes[count-1]);  // postfix
-}
-int main(int argc, char **argv) {
-    // TODO: add flag for basis size
-    // build struct
-    struct wheel_factor wf;
-    generate_basis(&wf, 3);
-    generate_wheel(&wf);
-
-    for (int i = 1; i < argc; i++) {
-        long input = strtol(argv[i], NULL, 10);
-        print_factors(&wf, input);
-    }
-    return 0;
 }

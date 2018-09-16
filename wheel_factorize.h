@@ -2,6 +2,7 @@
 #define __WHEEL_FACTORIZE
 
 #include <stdbool.h>
+#include <malloc.h>
 
 struct wheel_factor {
     long *basis;
