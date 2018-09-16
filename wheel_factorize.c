@@ -1,6 +1,5 @@
 #include <malloc.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -14,11 +13,12 @@
 // generates a list of primes < n
 long* sieve_of_eratosthenes(long n, long *length) {
     // TODO: we can save space by using a bitmap
-    uint8_t *a = malloc(n * sizeof(uint8_t));
+    // test whether it performs better
+    int *a = malloc(n * sizeof(int));
     if (a == NULL) {
         return NULL;
     }
-    memset(a, 1, n * sizeof(uint8_t));
+    memset(a, 1, n * sizeof(int));
     long max = (long) ceil(sqrt(n));
 
     long count = n-2;   // keep track of the number of
@@ -60,12 +60,13 @@ bool is_prime(long n) {
     bool result = true; // true until proven false
 
     // TODO: we can save space by using a bitmap
-    uint8_t *a = malloc(n * sizeof(uint8_t));
+    // test whether int lookups + bitmap will perform better
+    int *a = malloc(n * sizeof(int));   // int lookups are faster than uint8_t
     if (a == NULL) {
         // TODO: notify caller of error
         return NULL;
     }
-    memset(a, 1, n * sizeof(uint8_t));
+    memset(a, 1, n * sizeof(int));
 
     long max = (long) ceil(sqrt(n));
     for (long i = 2; i < max; i++) {
