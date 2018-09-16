@@ -22,7 +22,7 @@ print(wf.factors(22222222222))
 #### C
 
 ```C
-#include "wheel_factor.h"
+#include "wheel_factorize.h"
 
 struct wheel_factor wf;
 generate_basis(&wf, 3);     // basis size
@@ -39,7 +39,7 @@ Example
 
 ```bash
 $ make
-$ ./wheel_factorize 10 31 9999991 22222222222
+$ ./examples/example 10 31 9999991 22222222222
 ```
 
 ## Takeaways
