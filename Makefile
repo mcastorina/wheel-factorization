@@ -1,17 +1,21 @@
 SOURCE := wheel_factorize.c
-TARGET := wheel_factorize
 
 DEBUG := -ggdb
 LIBS  := -lm
 CC    := gcc
 
-all: ${SOURCE}
-	${CC} ${LIBS} ${SOURCE} -o ${TARGET}
+all: examples/example benchmark/benchmark
 
 debug: ${SOURCE}
-	${CC} ${LIBS} ${SOURCE} -o ${TARGET} ${DEBUG}
+	${CC} ${LIBS} ${SOURCE} -o debug ${DEBUG}
+
+examples/example: ${SOURCE} examples/example.c
+	${CC} ${LIBS} -I. $^ -o $@
+
+benchmark/benchmark: ${SOURCE} benchmark/benchmark.c
+	${CC} ${LIBS} -I. $^ -o $@
 
 clean:
-	rm -f ${TARGET}
+	rm -f debug examples/example benchmark/benchmark
 
 .phony: clean
