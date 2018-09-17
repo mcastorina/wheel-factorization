@@ -51,41 +51,44 @@ long* sieve_of_eratosthenes(long n, long *length) {
     *length = count;
     return result;
 }
-bool is_prime(long n) {
-    // modified sieve that will quit early if multiple found
-    if (n < 2) {
+bool is_prime(struct wheel_factor *wf, long n) {
+    // modified factors function that returns
+    // as soon as more than 1 factor is found
+    if (n <= 0) {
         return false;
     }
-    n += 1;             // add 1 because the sieve finds primes < n
-    bool result = true; // true until proven false
+    long factor_count = 0;
 
-    // TODO: we can save space by using a bitmap
-    // test whether int lookups + bitmap will perform better
-    int *a = malloc(n * sizeof(int));   // int lookups are faster than uint8_t
-    if (a == NULL) {
-        // TODO: notify caller of error
-        return NULL;
-    }
-    memset(a, 1, n * sizeof(int));
-
-    long max = (long) ceil(sqrt(n));
-    for (long i = 2; i < max; i++) {
-        if (a[i]) {
-            // if i is a divisor of n-1 (because we added 1 at the start)
-            if ((n-1) % i == 0) {
-                result = false;
-                goto is_prime_done;
-            }
-            // clear future entries
-            for (long j = i*i; j < n; j += i) {
-                a[j] = 0;
-            }
+    // add factors from basis
+    for (int i = 0; i < wf->basis_size; i++) {
+        long v = wf->basis[i];
+        while (n % v == 0) {
+            if (factor_count++ >= 1)
+                return false;
+            n /= v;
         }
     }
 
-is_prime_done:
-    free(a);
-    return result;
+    // add factors from wheel
+    int i = 0;
+    long k = wf->wheel[0];
+    while (k*k <= n) {
+        if (n % k == 0) {
+            if (factor_count++ >= 1)
+                return false;
+            n /= k;
+        }
+        else {
+            k += wf->increments[i];
+            i = (i+1) % wf->wheel_size;
+        }
+    }
+    if (n != 1) {
+        if (factor_count++ >= 1)
+            return false;
+    }
+
+    return true;
 }
 long gcd(long a, long b) {
     long tmp;
@@ -155,6 +158,21 @@ int generate_wheel(struct wheel_factor *wf) {
 
     wf->wheel = wheel;
     wf->wheel_size = index;
+
+    // generate increment array (increments between wheel elements)
+    long *inc = malloc(wf->wheel_size * sizeof(long));
+    if (inc == NULL) {
+        return 2;
+    }
+    for (int i = 0; i < wf->wheel_size-1; i++) {
+        inc[i] = wf->wheel[i+1] - wf->wheel[i];
+    }
+    // wrap last element
+    inc[wf->wheel_size-1] = wf->wheel[0]
+        + prod_arr(wf->basis, wf->basis_size)
+        - wf->wheel[wf->wheel_size-1];
+    wf->increments = inc;
+
     return 0;
 }
 long* factors(struct wheel_factor *wf, long n, long *count) {
@@ -169,16 +187,6 @@ long* factors(struct wheel_factor *wf, long n, long *count) {
     }
     long index = 0;
     factors[index++] = 1;
-
-    // generate inc array (increments between wheel elements)
-    long inc[wf->wheel_size];
-    for (int i = 0; i < wf->wheel_size-1; i++) {
-        inc[i] = wf->wheel[i+1] - wf->wheel[i];
-    }
-    // wrap last element
-    inc[wf->wheel_size-1] = wf->wheel[0]
-        + prod_arr(wf->basis, wf->basis_size)
-        - wf->wheel[wf->wheel_size-1];
 
     // add factors from basis
     for (int i = 0; i < wf->basis_size; i++) {
@@ -198,7 +206,7 @@ long* factors(struct wheel_factor *wf, long n, long *count) {
             n /= k;
         }
         else {
-            k += inc[i];
+            k += wf->increments[i];
             i = (i+1) % wf->wheel_size;
         }
     }
