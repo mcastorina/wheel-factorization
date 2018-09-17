@@ -21,15 +21,18 @@ long* sieve_of_eratosthenes(long n, long *length) {
     memset(a, 1, n * sizeof(int));
     long max = (long) ceil(sqrt(n));
 
-    long count = n-2;   // keep track of the number of
-                        // true values in 'a'
     for (long i = 2; i < max; i++) {
         if (a[i]) {
             for (long j = i*i; j < n; j += i) {
-                count -= a[j];  // sometimes a[j] is cleared multiple times
-                a[j] = 0;       // might be better to count at the end
-                                // to avoid read + write
+                a[j] = 0;
             }
+        }
+    }
+
+    long count = 0;
+    for (long i = 2; i < n; i++) {
+        if (a[i]) {
+            count++;
         }
     }
 
