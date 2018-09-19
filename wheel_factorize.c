@@ -54,45 +54,6 @@ long* sieve_of_eratosthenes(long n, long *length) {
     *length = count;
     return result;
 }
-bool is_prime(struct wheel_factor *wf, long n) {
-    // modified factors function that returns
-    // as soon as more than 1 factor is found
-    if (n <= 0) {
-        return false;
-    }
-    long factor_count = 0;
-
-    // add factors from basis
-    for (int i = 0; i < wf->basis_size; i++) {
-        long v = wf->basis[i];
-        while (n % v == 0) {
-            if (factor_count++ >= 1)
-                return false;
-            n /= v;
-        }
-    }
-
-    // add factors from wheel
-    int i = 0;
-    long k = wf->wheel[0];
-    while (k*k <= n) {
-        if (n % k == 0) {
-            if (factor_count++ >= 1)
-                return false;
-            n /= k;
-        }
-        else {
-            k += wf->increments[i];
-            i = (i+1) % wf->wheel_size;
-        }
-    }
-    if (n != 1) {
-        if (factor_count++ >= 1)
-            return false;
-    }
-
-    return true;
-}
 long gcd(long a, long b) {
     long tmp;
     while (b != 0) {
@@ -219,4 +180,53 @@ long* factors(struct wheel_factor *wf, long n, long *count) {
 
     *count = index;
     return factors;
+}
+bool is_prime(struct wheel_factor *wf, long n) {
+    // modified factors function that returns
+    // as soon as more than 1 factor is found
+    if (n <= 0) {
+        return false;
+    }
+    long factor_count = 0;
+
+    // add factors from basis
+    for (int i = 0; i < wf->basis_size; i++) {
+        long v = wf->basis[i];
+        while (n % v == 0) {
+            if (factor_count++ >= 1)
+                return false;
+            n /= v;
+        }
+    }
+
+    // add factors from wheel
+    int i = 0;
+    long k = wf->wheel[0];
+    while (k*k <= n) {
+        if (n % k == 0) {
+            if (factor_count++ >= 1)
+                return false;
+            n /= k;
+        }
+        else {
+            k += wf->increments[i];
+            i = (i+1) % wf->wheel_size;
+        }
+    }
+    if (n != 1) {
+        if (factor_count++ >= 1)
+            return false;
+    }
+
+    return true;
+}
+int wheel_factor_init(struct wheel_factor *wf, int basis_size) {
+    int ret;
+    if (ret = generate_basis(wf, basis_size)) {
+        return ret;
+    }
+    if (ret = generate_wheel(wf)) {
+        return ret | 0x10;
+    }
+    return 0;
 }

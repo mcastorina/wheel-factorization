@@ -25,8 +25,7 @@ print(wf.factors(22222222222))
 #include "wheel_factorize.h"
 
 struct wheel_factor wf;
-generate_basis(&wf, 3);     // basis size
-generate_wheel(&wf);
+wheel_factor_init(&wf, 3);  // basis size
 
 long count;
 long *primes = factors(&wf, 10, &count);            free(primes);

@@ -18,10 +18,9 @@ void print_factors(struct wheel_factor *wf, long n) {
 }
 int main(int argc, char **argv) {
     // TODO: add flag for basis size
-    // build struct
+    // initialize struct
     struct wheel_factor wf;
-    generate_basis(&wf, 3);
-    generate_wheel(&wf);
+    wheel_factor_init(&wf, 3);
 
     for (int i = 1; i < argc; i++) {
         long input = strtol(argv[i], NULL, 10);

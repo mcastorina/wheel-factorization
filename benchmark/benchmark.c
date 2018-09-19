@@ -12,8 +12,7 @@ double get_time() {
 
 double benchmark(long n, long reps) {
     struct wheel_factor wf;
-    generate_basis(&wf, 3);
-    generate_wheel(&wf);
+    wheel_factor_init(&wf, 3);
 
     long count;
     long *primes;

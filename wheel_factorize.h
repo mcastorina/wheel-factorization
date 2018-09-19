@@ -12,8 +12,7 @@ struct wheel_factor {
     long *increments;
 };
 
-int generate_basis(struct wheel_factor *wf, int basis_size);
-int generate_wheel(struct wheel_factor *wf);
+int wheel_factor_init(struct wheel_factor *wf, int basis_size);
 long* factors(struct wheel_factor *wf, long n, long *count);
 bool is_prime(struct wheel_factor *wf, long n);
 
