@@ -184,7 +184,7 @@ long* factors(struct wheel_factor *wf, long n, long *count) {
 bool is_prime(struct wheel_factor *wf, long n) {
     // modified factors function that returns
     // as soon as more than 1 factor is found
-    if (n <= 0) {
+    if (n <= 1) {
         return false;
     }
     long factor_count = 0;

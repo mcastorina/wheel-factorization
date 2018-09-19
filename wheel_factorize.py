@@ -53,7 +53,7 @@ class WheelFactor:
         return _factors
     def is_prime(self, n):
         # modified wheel that will quit early if 2 factors found
-        if n <= 0: return False
+        if n <= 1: return False
         factor_count = 0
         for v in self.basis:
             while n % v == 0:
