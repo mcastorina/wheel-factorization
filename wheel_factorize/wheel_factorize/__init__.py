@@ -1,3 +1,5 @@
+name = "wheel_factorize"
+
 import numpy as np
 
 # the Sieve of Eratosthenes

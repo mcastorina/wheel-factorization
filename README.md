@@ -6,6 +6,18 @@ Python and C.
 
 [Wikipedia Link](https://en.wikipedia.org/wiki/Wheel_factorization)
 
+## Install
+
+To install for Python you can use the `pip` utility.
+
+```bash
+# Python 3
+$ pip3 install wheel_factorize
+
+# Python 2
+$ pip2 install wheel_factorize
+```
+
 ## Usage
 
 #### Python
@@ -39,7 +51,7 @@ long *primes = factors(&wf, 10, &count);            free(primes);
 ```bash
 $ make
 $ ./examples/example 10 31 9999991 22222222222
-$ PYTHONPATH="$PYTHONPATH:." python examples/example.py 1 10 31 9999991
+$ python examples/example.py 10 31 9999991 22222222222
 ```
 
 ## Performance
