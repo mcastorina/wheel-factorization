@@ -44,7 +44,7 @@ class WheelFactor:
                 n //= v
         i = 0
         k = self.wheel[0]
-        while k*k <= n:
+        while k**2 <= n:
             if n % k == 0:
                 _factors += [k]
                 n //= k
@@ -64,7 +64,7 @@ class WheelFactor:
                 n //= v
         i = 0
         k = self.wheel[0]
-        while k*k <= n:
+        while k**2 <= n:
             if n % k == 0:
                 if factor_count >= 1: return False
                 factor_count += 1
