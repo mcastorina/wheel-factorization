@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="wheel_factorize",
-    version="1.0.0",
+    version="1.0.1",
     author="miccah",
     author_email="m.castorina93@gmail.com",
     description="Library for finding prime factorizations and primality",
